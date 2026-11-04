@@ -45,7 +45,7 @@
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeSpeed;
     line-height:1.5;
-    overscroll-behavior:none; /* Фикс прыжков на iOS */
+    overscroll-behavior:none;
   }
 
   .screen.scrollable::-webkit-scrollbar{width:10px}
@@ -114,7 +114,7 @@
     justify-content:flex-start;
     padding:80px 20px 60px;
     overflow-y:auto;-webkit-overflow-scrolling:touch;
-    overscroll-behavior:contain; /* Фикс прокрутки фона */
+    overscroll-behavior:contain;
   }
 
   #disclaimer .card{
@@ -181,7 +181,7 @@
     box-shadow:0 6px 24px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.06);
     transition:transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
     overflow:hidden;-webkit-tap-highlight-color:transparent;text-decoration:none;
-    touch-action:manipulation; /* Убирает задержку клика на телефоне */
+    touch-action:manipulation;
   }
   .btn::after{
     content:"";position:absolute;inset:0;
@@ -227,12 +227,29 @@
   }
   .hint{color:var(--muted);font-size:13px;margin-bottom:32px;text-align:center}
 
+  .search-bar{
+    width:100%;max-width:640px;margin-bottom:24px;
+    display:flex;align-items:center;gap:10px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:12px;padding:12px 16px;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .search-bar:focus-within{
+    border-color:#fff;box-shadow:0 0 20px rgba(255,255,255,.15);
+  }
+  .search-bar input{
+    flex:1;background:transparent;border:none;outline:none;
+    color:#fff;font-family:var(--font-body);font-size:15px;
+  }
+  .search-bar input::placeholder{color:var(--muted)}
+  .search-bar .icon{font-size:18px;color:var(--muted)}
+
   .story-list{
     width:100%;max-width:640px;
     display:flex;flex-direction:column;gap:16px;margin:0 auto;
   }
   
-  /* --- КАРТОЧКИ (С КАРТИНКАМИ И БЕЗ) --- */
   .story-card{
     padding:22px 24px;border-radius:16px;
     background:linear-gradient(150deg, rgba(18,18,18,.92), rgba(0,0,0,.98));
@@ -244,9 +261,7 @@
     display:flex;flex-direction:column;
     touch-action:manipulation;
   }
-  .story-card.has-image{
-    padding:0;
-  }
+  .story-card.has-image{padding:0;}
   .story-card::before{
     content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
     background:linear-gradient(180deg, transparent, rgba(255,255,255,.5), transparent);
@@ -260,26 +275,16 @@
   }
   
   .story-card-img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    object-position: center 30%;
+    width: 100%;height: 180px;object-fit: cover;object-position: center 30%;
     border-bottom: 1px solid rgba(255,255,255,.08);
     mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
-    opacity: 0.85;
-    transition: opacity .3s, transform .3s;
-    z-index: 1;
+    opacity: 0.85;transition: opacity .3s, transform .3s;z-index: 1;
   }
-  .story-card:hover .story-card-img {
-    opacity: 1;
-    transform: scale(1.03);
-  }
+  .story-card:hover .story-card-img {opacity: 1;transform: scale(1.03);}
   
   .story-card-content {
-    padding: 22px 24px;
-    position: relative;
-    z-index: 2;
+    padding: 22px 24px;position: relative;z-index: 2;
   }
   .story-card.has-image .story-card-content {
     margin-top: -40px;
@@ -323,12 +328,8 @@
   }
 
   .reader-cover {
-    width: 100%;
-    max-height: 420px;
-    object-fit: cover;
-    object-position: center 25%;
-    border-radius: 16px;
-    margin-bottom: 34px;
+    width: 100%;max-height: 420px;object-fit: cover;object-position: center 25%;
+    border-radius: 16px;margin-bottom: 34px;
     border: 1px solid rgba(255,255,255,.15);
     box-shadow: 0 10px 30px rgba(0,0,0,.8);
     animation: fadeUp .8s var(--ease) both;
@@ -339,14 +340,10 @@
 
   .reader-body{
     font-size:clamp(15.5px,4vw,17.5px);
-    line-height:1.85;
-    color:#e8e8e8;
-    letter-spacing:.15px;
-    font-weight:400;
+    line-height:1.85;color:#e8e8e8;letter-spacing:.15px;font-weight:400;
   }
   .reader-body p{
-    margin-bottom:22px;
-    opacity:0;transform:translateY(14px);
+    margin-bottom:22px;opacity:0;transform:translateY(14px);
     transition:opacity .8s var(--ease), transform .8s var(--ease);
   }
   .reader-body p.visible{opacity:1;transform:none}
@@ -354,55 +351,36 @@
   .reader-body p:first-of-type::first-letter{
     font-family:var(--font-display);
     font-weight:900;font-size:2.4em;line-height:.9;
-    color:#fff;float:left;
-    margin:6px 10px 0 0;
+    color:#fff;float:left;margin:6px 10px 0 0;
   }
-  /* ---------- ДИАЛОГИ С НИКАМИ ---------- */
   .reader-body .dlg{
-    display:block;
-    margin:16px 0;
-    padding:14px 18px;
+    display:block;margin:16px 0;padding:14px 18px;
     border-left:3px solid rgba(255,255,255,.45);
     background:rgba(255,255,255,.03);
-    border-radius:0 10px 10px 0;
-    color:#f5f5f5;
+    border-radius:0 10px 10px 0;color:#f5f5f5;
     transition:background .3s, border-color .3s;
   }
-  .reader-body .dlg:hover{
-    background:rgba(255,255,255,.06);
-    border-color:#fff;
-  }
+  .reader-body .dlg:hover{background:rgba(255,255,255,.06);border-color:#fff;}
   .reader-body .dlg .who{
-    display:block;
-    font-family:var(--font-display);
-    font-size:11px;
-    font-weight:900;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    color:#fff;
-    margin-bottom:5px;
-    opacity:.95;
+    display:block;font-family:var(--font-display);
+    font-size:11px;font-weight:900;letter-spacing:2px;
+    text-transform:uppercase;color:#fff;margin-bottom:5px;opacity:.95;
   }
   .reader-body .dlg .what{
-    display:block;
-    font-style:italic;
-    color:#e8e8e8;
-    line-height:1.55;
+    display:block;font-style:italic;color:#e8e8e8;line-height:1.55;
   }
   .reader-body .dlg .what + .who{margin-top:14px}
   .reader-body em{color:#fff;font-style:italic;opacity:.95}
   .reader-body .scene-break{
-    display:block;text-align:center;
-    margin:34px 0;color:var(--dim);
+    display:block;text-align:center;margin:34px 0;color:var(--dim);
     font-family:var(--font-display);font-size:14px;
     letter-spacing:8px;user-select:none;
   }
   .reader-body .end{
-    display:block;text-align:center;
-    margin:44px 0 20px;
+    display:block;text-align:center;margin:44px 0 20px;
     font-family:var(--font-display);font-weight:900;
-    letter-spacing:8px;font-size:13px;
-    color:#fff;text-transform:uppercase;opacity:.85;
+    letter-spacing:8px;font-size:13px;color:#fff;
+    text-transform:uppercase;opacity:.85;
     animation:fadeUp 1.2s var(--ease) both;
   }
   .reader-body .end::before,
@@ -445,53 +423,30 @@
     margin-left:auto;margin-right:auto;
   }
 
-  /* --- СТИЛИ ДЛЯ РОЗЫГРЫШЕЙ --- */
   .prize-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin: 20px 0 30px;
+    display: grid;grid-template-columns: 1fr;gap: 12px;margin: 20px 0 30px;
   }
   .prize-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    display: flex;align-items: center;gap: 12px;
     background: rgba(255,255,255,.04);
     border: 1px solid rgba(255,255,255,.1);
-    padding: 14px 16px;
-    border-radius: 12px;
+    padding: 14px 16px;border-radius: 12px;
     transition: background .3s, border-color .3s;
   }
-  .prize-item:hover {
-    background: rgba(255,255,255,.08);
-    border-color: rgba(255,255,255,.3);
-  }
+  .prize-item:hover {background: rgba(255,255,255,.08);border-color: rgba(255,255,255,.3);}
   .prize-icon {
-    font-size: 24px;
-    background: rgba(255,255,255,.1);
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    flex-shrink: 0;
+    font-size: 24px;background: rgba(255,255,255,.1);
+    width: 44px;height: 44px;display: flex;align-items: center;justify-content: center;
+    border-radius: 10px;flex-shrink: 0;
   }
   .prize-text { text-align: left; font-size: 14px; line-height: 1.4; color: #e4e4e4; }
   .prize-text strong { color: #fff; display: block; margin-bottom: 2px; font-family: var(--font-display); font-size: 13px; letter-spacing: .5px; }
   
   .giveaway-badge {
-    display: inline-block;
-    background: #fff;
-    color: #000;
-    font-family: var(--font-display);
-    font-size: 12px;
-    font-weight: 900;
-    padding: 6px 14px;
-    border-radius: 99px;
-    margin-bottom: 20px;
-    letter-spacing: 1px;
-    box-shadow: 0 0 20px rgba(255,255,255,.3);
+    display: inline-block;background: #fff;color: #000;
+    font-family: var(--font-display);font-size: 12px;font-weight: 900;
+    padding: 6px 14px;border-radius: 99px;margin-bottom: 20px;
+    letter-spacing: 1px;box-shadow: 0 0 20px rgba(255,255,255,.3);
   }
 
   #support .support-card{
@@ -500,14 +455,12 @@
     border:1px solid rgba(255,255,255,.25);
     box-shadow:0 0 50px rgba(255,255,255,.1), inset 0 0 40px rgba(255,255,255,.03);
     backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-    animation:cardIn .9s var(--ease) both;
-    text-align:center;
+    animation:cardIn .9s var(--ease) both;text-align:center;
   }
   #support h1{
     font-family:var(--font-display);
     font-size:clamp(20px,5.5vw,30px);font-weight:900;letter-spacing:.5px;
-    margin-bottom:22px;color:#fff;
-    text-shadow:0 0 30px rgba(255,255,255,.4);
+    margin-bottom:22px;color:#fff;text-shadow:0 0 30px rgba(255,255,255,.4);
   }
   #support .support-text{
     font-size:clamp(14px,3.8vw,16px);
@@ -537,21 +490,17 @@
     word-break:break-all;text-decoration:none;
     transition:background .25s, border-color .25s;
   }
-  #support .link-box:hover{
-    background:rgba(255,255,255,.08);border-color:#fff;color:#fff;
-  }
+  #support .link-box:hover{background:rgba(255,255,255,.08);border-color:#fff;color:#fff;}
   .btn-tyk{
     display:block;width:100%;padding:26px 20px;margin-top:8px;
-    font-family:var(--font-display);
-    font-size:clamp(22px,6vw,30px);
+    font-family:var(--font-display);font-size:clamp(22px,6vw,30px);
     font-weight:900;letter-spacing:6px;color:#000;background:#fff;
     border:none;border-radius:16px;cursor:pointer;text-decoration:none;
     text-align:center;position:relative;overflow:hidden;
     box-shadow:0 0 40px rgba(255,255,255,.5), 0 10px 30px rgba(0,0,0,.6);
     transition:transform .25s var(--ease), box-shadow .25s var(--ease);
     animation:tykPulse 2.2s ease-in-out infinite;
-    -webkit-tap-highlight-color:transparent;
-    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;touch-action:manipulation;
   }
   @keyframes tykPulse{
     0%,100%{box-shadow:0 0 40px rgba(255,255,255,.5), 0 10px 30px rgba(0,0,0,.6)}
@@ -583,19 +532,9 @@
     .reader-body .dlg{padding:12px 14px;margin:14px 0}
     #support .support-card{padding:28px 22px}
     
-    /* Фикс картинок для мобильных, чтобы не резало лица */
-    .story-card-img {
-      height: 160px;
-      object-position: center 20%; 
-    }
-    .reader-cover {
-      max-height: 250px;
-      object-position: center 20%;
-      margin-bottom: 24px;
-    }
-    .story-card.has-image .story-card-content {
-      margin-top: -20px;
-    }
+    .story-card-img {height: 160px;object-position: center 20%;}
+    .reader-cover {max-height: 250px;object-position: center 20%;margin-bottom: 24px;}
+    .story-card.has-image .story-card-content {margin-top: -20px;}
     .prize-grid { grid-template-columns: 1fr; }
   }
   @media (prefers-reduced-motion:reduce){
@@ -635,10 +574,24 @@
     <div class="subtitle">Истории · 18+</div>
     <nav class="menu-list">
       <button class="btn" onclick="show('stories')"><span class="icon">📖</span> Читать истории</button>
+      <button class="btn" onclick="show('search')"><span class="icon">🔍</span> Поиск историй</button>
       <button class="btn" onclick="show('giveaways')"><span class="icon">🎁</span> Розыгрыши</button>
       <button class="btn support" onclick="show('support')"><span class="icon">💛</span> Поддержать автора</button>
       <button class="btn" onclick="show('about')"><span class="icon">✨</span> О проекте</button>
     </nav>
+  </section>
+
+  <section class="screen hidden scrollable" id="search">
+    <button class="back-btn" onclick="show('menu')">← Назад</button>
+    <h2 class="page-title">Поиск</h2>
+    <p class="hint">Введите название или имя персонажа</p>
+    
+    <div class="search-bar">
+      <span class="icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Например: Абоба или Максим..." oninput="performSearch(this.value)">
+    </div>
+
+    <div class="story-list" id="searchResults"></div>
   </section>
 
   <section class="screen hidden scrollable" id="stories">
@@ -1225,6 +1178,112 @@
         d('Pyps','Ты останешься?') + d('DetLlr','Я и не собирался уходить.') + d('Pyps','Тогда зачем спрашиваешь?') + d('DetLlr','Чтобы услышать, как ты это скажешь.'),
         'Он остался. И в чате стал писать чуть меньше — потому что теперь ему не нужно было быть громким, чтобы его услышали.'
       ]
+    },
+    /* ===== СУЛТИК + АБОБА ===== */
+    {
+      id: 'sultik-aboba',
+      title: 'Султик и Абоба',
+      subtitle: 'Он думал, что знает, чего хочет. Но Султик оказалась не такой, как он думал. И это было лучше.',
+      tag: 'романтика · 18+',
+      paragraphs: [
+        'Султик в чате была тихой, но с огоньком. Абоба — громким и шумным. Они пересеклись случайно в голосовом, когда Абоба в очередной раз пытался всех рассмешить, а Султик просто сидела и слушала. А потом написала в личку: «Ты не такой смешной, когда один».',
+        d('Абоба','Ты почему мне не смеёшься?') + d('Султик','Потому что смеяться нужно не над шутками, а с кем-то.') + d('Абоба','С кем-то...') + d('Султик','Да. А ты шутишь в пустоту.'),
+        'Абоба задумался. Впервые за долгое время кто-то сказал ему не «ты забавный», а что-то настоящее. Он начал писать ей в личку — сначала с шутками, потом без. Она отвечала искренне, без масок. Так завязалось их общение.',
+        d('Абоба','Ты вообще когда-нибудь смеёшься?') + d('Султик','Когда мне смешно. А тебе?') + d('Абоба','Постоянно.') + d('Султик','Значит, ты либо очень счастливый, либо очень хорошо притворяешься.'),
+        'Они встретились поздним вечером. Султик пришла в простом платье, без макияжа. Абоба впервые не пытался быть самым громким в комнате. Они сидели в кафе, говорили обо всём — о страхах, о детстве, о том, что обычно прячут за шутками.',
+        d('Султик','Ты когда последний раз молчал просто так?') + d('Абоба','Не помню.') + d('Султик','Тогда давай попробуем сейчас.') + d('Абоба','Молчать?') + d('Султик','Да. Просто быть рядом.'),
+        'Они гуляли долго. Молчали и говорили. Абоба впервые не чувствовал необходимости заполнять паузы шутками. Султик шла рядом и улыбалась — не его шуткам, а ему. У её подъезда он остановился.',
+        d('Султик','Ты чего?') + d('Абоба','Не хочу уходить.') + d('Султик','Тогда не уходи.') + d('Абоба','А если я останусь?') + d('Султик','Я не против.'),
+        'Дома было тихо и тепло. Султик заварила чай, и они сидели на кухне. Абоба впервые за долгое время не сказал ни одной шутки. Он просто смотрел на неё и слушал, как она говорит о своей жизни — без прикрас, честно.',
+        d('Султик','Ты сегодня очень тихий.') + d('Абоба','Я просто не хочу ничего портить.') + d('Султик','Ты не портишь. Ты настоящий.') + d('Абоба','Это впервые.'),
+        'Она взяла его за руку. Пальцы у него дрожали — не от страха, а от чего-то другого. Они сидели так долго, прежде чем Султик наклонилась и поцеловала его. Нежно, без спешки.',
+        '<span class="scene-break">* * *</span>',
+        'Ночь была жаркой и тихой. Абоба впервые за долгое время чувствовал себя не клоуном, а просто мужчиной. Султик была нежной, но уверенной. Они не спешили, и от этого было ещё лучше. К утру оба лежали, глядя в потолок, и молчали — но это было хорошее молчание.',
+        d('Султик','Ты не жалеешь?') + d('Абоба','Нет.') + d('Султик','Ты сегодня был другим.') + d('Абоба','С тобой я другой.') + d('Султик','Тогда оставайся.'),
+        'Утром Абоба проснулся первым. Посмотрел на спящую Султик и понял, что впервые за долгое время ему не нужно ничего доказывать. Он просто счастлив.',
+        d('Султик','Ты чего уставился?') + d('Абоба','Любуюсь.') + d('Султик','Фу, это было слишком мило. Верни мемы.') + d('Абоба','Не верну. С тобой я другой.'),
+        'Он остался. И в чате стал писать чуть меньше — потому что теперь ему не нужно было быть громким, чтобы его заметили.'
+      ]
+    },
+    /* ===== ИНКУБАТОР + АНАРХИ (МУЖЧИНА) ===== */
+    {
+      id: 'inkubator-anarchi-m',
+      title: 'Инкубатор и Анархи',
+      subtitle: 'Он был уверен в себе. Анархи — тоже. Но с Инкубатором он впервые почувствовал себя нежным.',
+      tag: 'романтика · 18+',
+      paragraphs: [
+        'Анархи был мужчиной, который не привык показывать слабость. В чате он держался с вызовом, шутил, флиртовал — но никогда не подпускал близко. Инкубатор появился в чате как-то незаметно: спокойный, уверенный, с лёгкой усмешкой. Он не пытался произвести впечатление. И именно это зацепило Анархи.',
+        d('Анархи','Ты почему всегда такой спокойный?') + d('Инкубатор','А зачем суетиться? Всё идёт своим чередом.') + d('Анархи','Скучно.') + d('Инкубатор','А по-моему, интересно. Ты просто не привык.'),
+        'Они начали спорить. Сначала в чате, потом в личке. Анархи не мог понять, почему этот парень его так цепляет. Инкубатор не отступал и не поддавался. Он просто был собой — и Анархи впервые за долгое время почувствовал, что его видят настоящим.',
+        d('Анархи','Ты вообще когда-нибудь теряешь контроль?') + d('Инкубатор','Иногда. Когда есть причина.') + d('Анархи','Какая причина?') + d('Инкубатор','Ты, например.'),
+        'Анархи замолчал. Впервые за долгое время он не знал, что сказать. А Инкубатор просто улыбнулся. Встретились вечером. Анархи пришёл в чёрной куртке, с привычной маской безразличия. Инкубатор — в простом, без пафоса. Они сели напротив друг друга, и Анархи впервые не знал, что сказать.',
+        d('Инкубатор','Ты выглядишь иначе, чем в чате.') + d('Анархи','Как?') + d('Инкубатор','Тише. Настоящее.') + d('Анархи','Не начинай.') + d('Инкубатор','Я не начинаю. Я просто говорю, что вижу.'),
+        'Гуляли долго. Говорили о том, о чём обычно молчат: о страхах, о прошлом, о том, как оба устали притворяться. Анархи впервые за долгое время не чувствовал необходимости защищаться. С ним было просто.',
+        d('Анархи','Почему с тобой так легко?') + d('Инкубатор','Потому что ты не боишься, что я тебя ударю.') + d('Анархи','А если ударю я?') + d('Инкубатор','Тогда я просто отойду. Но не уйду.'),
+        'У подъезда Анархи он остановился. Инкубатор не спрашивал, не намекал. Просто стоял. Анархи посмотрел на него и впервые за долгое время понял, что не хочет, чтобы он уходил.',
+        d('Анархи','Зайдёшь?') + d('Инкубатор','Если ты хочешь.') + d('Анархи','Я не спрашиваю, хочу ли я. Я спрашиваю, зайдёшь ли ты.') + d('Инкубатор','Тогда да.'),
+        'Дома у Анархи было холодно и пусто. Он не привык к гостям. Инкубатор сел на кухне, не задавая лишних вопросов. Они пили чай, и Анархи впервые за долгое время не чувствовал себя в обороне.',
+        d('Анархи','Ты не боишься меня?') + d('Инкубатор','Нет.') + d('Анархи','Почему?') + d('Инкубатор','Потому что ты не такой, как хочешь казаться. Ты просто устал защищаться.'),
+        'Анархи подошёл ближе. Инкубатор не отстранился. Их взгляды встретились, и Анархи впервые за долгое время почувствовал, что не должен ничего доказывать. Он наклонился и поцеловал его. Инкубатор ответил — не торопясь, но уверенно.',
+        '<span class="scene-break">* * *</span>',
+        'Ночь была жаркой и тяжёлой — такой, какими бывают вечера, когда долго держишь всё в себе и наконец отпускаешь. Анархи оказался не таким грубым, как показывал. Инкубатор — настойчивее, чем казался. Между ними не было ни спешки, ни неловкости. Только дыхание, касания, тихие слова. К утру оба выдохлись и затихли, сплетясь на смятых простынях.',
+        d('Анархи','Я не жалею.') + d('Инкубатор','Я тоже.') + d('Анархи','И что теперь?') + d('Инкубатор','Теперь, наверное, придётся признать, что мы оба идиоты.') + d('Анархи','Я так и знал.') + d('Инкубатор','И я.'),
+        'Утром Анархи впервые не ушёл первым. Смотрел, как Инкубатор варит кофе, и понимал, что никуда не хочет уходить.',
+        d('Инкубатор','Ты остаёшься?') + d('Анархи','Похоже на то.') + d('Инкубатор','Тогда не командуй на кухне.') + d('Анархи','Я и не собирался.'),
+        'Они до сих пор спорят. Но теперь — кто первый встанет варить кофе.'
+      ]
+    },
+    /* ===== АБОБА (ФЕМБОЙ В КОСТЮМЕ КОШКИ) + АНАРХИ ===== */
+    {
+      id: 'aboba-femboy-anarchi',
+      title: 'Абоба (фембой) и Анархи',
+      subtitle: 'Он думал, что знает, чего хочет. Но Абоба в костюме кошки оказался слишком соблазнительным.',
+      tag: 'романтика · 18+',
+      paragraphs: [
+        'Анархи никогда не думал, что его может зацепить парень. Но когда он увидел Абобу на вечеринке в костюме кошки — с ушками, хвостиком и милым ошейником — он понял, что его представления о себе были неполными. Абоба был фембоем: тонкие черты, мягкий голос, но с искоркой в глазах, которая говорила, что он знает, что делает.',
+        d('Анархи','Ты чего в костюме?') + d('Абоба','А что, не нравится?') + d('Анархи','Не то чтобы...') + d('Абоба','Тогда почему ты смотришь?'),
+        'Анархи не нашёл, что ответить. Абоба улыбнулся — мягко, но с вызовом. Он подошёл ближе, и Анархи почувствовал, как воздух между ними стал плотным. Абоба был не просто милым — он был опасным. И Анархи это нравилось.',
+        d('Анархи','Ты всегда такой?') + d('Абоба','Какой?') + d('Анархи','Соблазнительный.') + d('Абоба','Только когда есть цель.'),
+        'Они ушли с вечеринки вместе. Анархи не спрашивал, куда они идут. Абоба не говорил. Они просто шли рядом, и Анархи чувствовал, как его сердце бьётся быстрее. У подъезда Абоба остановился.',
+        d('Анархи','Ты чего?') + d('Абоба','Не хочу уходить.') + d('Анархи','Тогда не уходи.') + d('Абоба','А если я останусь?') + d('Анархи','Я не против.'),
+        'Дома было тихо и тепло. Абоба снял ушки, но ошейник оставил. Анархи смотрел на него и понимал, что не хочет, чтобы это заканчивалось. Абоба подошёл ближе, и Анархи почувствовал, как его руки касаются его лица. Мягко, нежно, но уверенно.',
+        d('Абоба','Ты не боишься?') + d('Анархи','Нет.') + d('Абоба','Почему?') + d('Анархи','Потому что ты не такой, как хочешь казаться. Ты просто хочешь, чтобы тебя увидели.'),
+        'Абоба улыбнулся. Впервые за вечер — искренне. Он наклонился и поцеловал Анархи. Нежно, но с огнём. Анархи ответил, и они не спешили. Впервые за долгое время Анархи чувствовал себя не сильным, а просто живым.',
+        '<span class="scene-break">* * *</span>',
+        'Ночь была жаркой и откровенной. Абоба оказался нежным, но настойчивым. Анархи — растерянным, но честным. Они не спешили, и от этого было ещё лучше. К утру оба лежали, глядя в потолок, и молчали — но это было хорошее молчание.',
+        d('Анархи','Ты не жалеешь?') + d('Абоба','Нет.') + d('Анархи','Я боялся, что ты скажешь иначе.') + d('Абоба','Я не играю в такие игры.'),
+        'Утром Анархи проснулся первым. Посмотрел на спящего Абобу и понял, что впервые за долгое время не хочет, чтобы он уходил.',
+        d('Абоба','Ты чего уставился?') + d('Анархи','Любуюсь.') + d('Абоба','Фу, это было слишком мило. Верни мемы.') + d('Анархи','Не верну. С тобой я другой.'),
+        'Он остался. И в чате стал писать чуть меньше — потому что теперь ему не нужно было быть громким, чтобы его заметили.'
+      ]
+    },
+    /* ===== КИПО + ЛОРД МАНАРХ ===== */
+    {
+      id: 'kipo-lord-manarh',
+      title: 'Кипо и Лорд Манарх',
+      subtitle: 'Один привык командовать. Другой — не привык подчиняться. И обоим это понравилось.',
+      tag: 'романтика · 18+',
+      paragraphs: [
+        'Кипо и Лорд Манарх познакомились в чате, когда Лорд Манарх пытался командовать, а Кипо просто проигнорировал его. Это было неожиданно — обычно все либо слушались, либо спорили. А Кипо просто не обратил внимания. И это зацепило Лорда Манарха.',
+        d('Лорд Манарх','Ты почему меня игнорируешь?') + d('Кипо','А зачем ты мне?') + d('Лорд Манарх','Я тут главный.') + d('Кипо','Это ты так думаешь.') + d('Лорд Манарх','Мне нравится твоя наглость.'),
+        'Они начали спорить. Сначала в чате, потом в личке. Лорд Манарх не привык, чтобы ему не уступали. Кипо не привык уступать. Они спорили обо всём: о музыке, о жизни, о том, кто прав. И каждый спор заканчивался ничьей — но оба возвращались за добавкой.',
+        d('Лорд Манарх','Ты вообще умеешь соглашаться?') + d('Кипо','Умею. Просто не с тобой.') + d('Лорд Манарх','Это вызов?') + d('Кипо','Это констатация.') + d('Лорд Манарх','Тогда я его принимаю.'),
+        'Встретились вечером. Лорд Манарх пришёл в чёрном, с привычной маской безразличия. Кипо — в простом, без пафоса. Они сели друг напротив друга, и Лорд Манарх впервые не знал, что сказать.',
+        d('Кипо','Ты выглядишь иначе, чем в чате.') + d('Лорд Манарх','Как?') + d('Кипо','Тише. Настоящее.') + d('Лорд Манарх','Не начинай.') + d('Кипо','Я не начинаю. Я просто говорю, что вижу.'),
+        'Гуляли долго. Говорили о том, о чём обычно молчат: о страхах, о прошлом, о том, как оба устали притворяться. Лорд Манарх впервые за долгое время не чувствовал необходимости защищаться. С Кипо было просто.',
+        d('Лорд Манарх','Почему с тобой так легко?') + d('Кипо','Потому что ты не боишься, что я тебя ударю.') + d('Лорд Манарх','А если ударю я?') + d('Кипо','Тогда я просто отойду. Но не уйду.'),
+        'У подъезда Лорда Манарха Кипо остановился. Не спрашивал, не намекал. Просто стоял. Лорд Манарх посмотрел на него и впервые за долгое время понял, что не хочет, чтобы он уходил.',
+        d('Лорд Манарх','Зайдёшь?') + d('Кипо','Если ты хочешь.') + d('Лорд Манарх','Я не спрашиваю, хочу ли я. Я спрашиваю, зайдёшь ли ты.') + d('Кипо','Тогда да.'),
+        'Дома у Лорда Манарха было холодно и пусто. Он не привык к гостям. Кипо сел на кухне, не задавая лишних вопросов. Они пили чай, и Лорд Манарх впервые за долгое время не чувствовал себя в обороне.',
+        d('Лорд Манарх','Ты не боишься меня?') + d('Кипо','Нет.') + d('Лорд Манарх','Почему?') + d('Кипо','Потому что ты не такой, как хочешь казаться. Ты просто устал защищаться.'),
+        'Лорд Манарх подошёл ближе. Кипо не отстранился. Их взгляды встретились, и Лорд Манарх впервые за долгое время почувствовал, что не должен ничего доказывать. Он наклонился и поцеловал его. Кипо ответил — не торопясь, но уверенно.',
+        '<span class="scene-break">* * *</span>',
+        'Ночь была жаркой и тяжёлой — такой, какими бывают вечера, когда долго держишь всё в себе и наконец отпускаешь. Лорд Манарх оказался не таким грубым, как показывал. Кипо — настойчивее, чем казался. Между ними не было ни спешки, ни неловкости. Только дыхание, касания, тихие слова. К утру оба выдохлись и затихли, сплетясь на смятых простынях.',
+        d('Лорд Манарх','Я не жалею.') + d('Кипо','Я тоже.') + d('Лорд Манарх','И что теперь?') + d('Кипо','Теперь, наверное, придётся признать, что мы оба идиоты.') + d('Лорд Манарх','Я так и знал.') + d('Кипо','И я.'),
+        'Утром Лорд Манарх впервые не ушёл первым. Смотрел, как Кипо варит кофе, и понимал, что никуда не хочет уходить.',
+        d('Кипо','Ты остаёшься?') + d('Лорд Манарх','Похоже на то.') + d('Кипо','Тогда не командуй на кухне.') + d('Лорд Манарх','Я и не собирался.'),
+        'Они до сих пор спорят. Но теперь — кто первый встанет варить кофе.'
+      ]
     }
   ];
 
@@ -1243,6 +1302,38 @@
     `).join('');
   })();
 
+  /* ================= ПОИСК ================= */
+  function performSearch(query) {
+    const q = query.toLowerCase().trim();
+    const container = document.getElementById('searchResults');
+    
+    if (!q) {
+      container.innerHTML = '<p class="hint" style="grid-column: 1/-1;">Введите запрос для поиска</p>';
+      return;
+    }
+
+    const results = STORIES.filter(s => {
+      const text = (s.title + ' ' + s.subtitle + ' ' + s.paragraphs.join(' ')).toLowerCase();
+      return text.includes(q);
+    });
+
+    if (results.length === 0) {
+      container.innerHTML = '<p class="hint" style="grid-column: 1/-1;">Ничего не найдено 😔</p>';
+      return;
+    }
+
+    container.innerHTML = results.map(s => `
+      <article class="story-card ${s.image ? 'has-image' : ''}" onclick="openStory('${s.id}')">
+        ${s.image ? `<img src="${s.image}" alt="${s.title}" class="story-card-img" loading="lazy" onerror="this.style.display='none'">` : ''}
+        <div class="story-card-content">
+          <h3>${s.title}</h3>
+          <p>${s.subtitle}</p>
+          <span class="tag">${s.tag}</span>
+        </div>
+      </article>
+    `).join('');
+  }
+
   /* ================= ОТКРЫТИЕ ИСТОРИИ ================= */
   function openStory(id){
     const story = STORIES.find(s => s.id === id);
@@ -1253,7 +1344,6 @@
     
     const body = document.getElementById('readerBody');
     
-    // Если есть картинка — выводим её в начале
     const coverHtml = story.image 
       ? `<img src="${story.image}" alt="${story.title}" class="reader-cover" onerror="this.style.display='none'">` 
       : '';
@@ -1282,13 +1372,24 @@
     reader:     document.getElementById('reader'),
     support:    document.getElementById('support'),
     about:      document.getElementById('about'),
-    giveaways:  document.getElementById('giveaways')
+    giveaways:  document.getElementById('giveaways'),
+    search:     document.getElementById('search')
   };
 
   function show(name){
     Object.values(screens).forEach(s => s.classList.add('hidden'));
     screens[name].classList.remove('hidden');
     if (screens[name].classList.contains('scrollable')) screens[name].scrollTop = 0;
+    
+    // Очищаем поиск при переходе на него
+    if(name === 'search'){
+      document.getElementById('searchInput').value = '';
+      document.getElementById('searchResults').innerHTML = '<p class="hint" style="grid-column: 1/-1;">Введите запрос для поиска</p>';
+      // Автофокус на поле ввода (только на десктопе, чтобы не вылезала клавиатура на мобильных)
+      if(window.innerWidth > 768) {
+        setTimeout(() => document.getElementById('searchInput').focus(), 300);
+      }
+    }
   }
 
   window.addEventListener('load', () => {
