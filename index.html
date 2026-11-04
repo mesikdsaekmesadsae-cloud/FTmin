@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#000000">
 <title>Истории 18+ | FtMine</title>
 <meta name="description" content="Вымышленные истории участников чата anarchy5chat. 18+">
@@ -45,6 +45,7 @@
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeSpeed;
     line-height:1.5;
+    overscroll-behavior:none; /* Фикс прыжков на iOS */
   }
 
   .screen.scrollable::-webkit-scrollbar{width:10px}
@@ -113,6 +114,7 @@
     justify-content:flex-start;
     padding:80px 20px 60px;
     overflow-y:auto;-webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain; /* Фикс прокрутки фона */
   }
 
   #disclaimer .card{
@@ -179,6 +181,7 @@
     box-shadow:0 6px 24px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.06);
     transition:transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
     overflow:hidden;-webkit-tap-highlight-color:transparent;text-decoration:none;
+    touch-action:manipulation; /* Убирает задержку клика на телефоне */
   }
   .btn::after{
     content:"";position:absolute;inset:0;
@@ -213,6 +216,7 @@
     backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
     transition:transform .2s, box-shadow .2s, border-color .2s;
     -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
   }
   .back-btn:hover{transform:translateX(-3px);box-shadow:0 0 20px var(--glow);border-color:#fff}
 
@@ -238,6 +242,7 @@
     -webkit-tap-highlight-color:transparent;
     position:relative;overflow:hidden;
     display:flex;flex-direction:column;
+    touch-action:manipulation;
   }
   .story-card.has-image{
     padding:0;
@@ -440,6 +445,55 @@
     margin-left:auto;margin-right:auto;
   }
 
+  /* --- СТИЛИ ДЛЯ РОЗЫГРЫШЕЙ --- */
+  .prize-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 20px 0 30px;
+  }
+  .prize-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.1);
+    padding: 14px 16px;
+    border-radius: 12px;
+    transition: background .3s, border-color .3s;
+  }
+  .prize-item:hover {
+    background: rgba(255,255,255,.08);
+    border-color: rgba(255,255,255,.3);
+  }
+  .prize-icon {
+    font-size: 24px;
+    background: rgba(255,255,255,.1);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .prize-text { text-align: left; font-size: 14px; line-height: 1.4; color: #e4e4e4; }
+  .prize-text strong { color: #fff; display: block; margin-bottom: 2px; font-family: var(--font-display); font-size: 13px; letter-spacing: .5px; }
+  
+  .giveaway-badge {
+    display: inline-block;
+    background: #fff;
+    color: #000;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 900;
+    padding: 6px 14px;
+    border-radius: 99px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    box-shadow: 0 0 20px rgba(255,255,255,.3);
+  }
+
   #support .support-card{
     max-width:560px;width:100%;padding:36px 28px;border-radius:22px;
     background:linear-gradient(155deg, rgba(20,20,20,.95), rgba(0,0,0,.98));
@@ -497,6 +551,7 @@
     transition:transform .25s var(--ease), box-shadow .25s var(--ease);
     animation:tykPulse 2.2s ease-in-out infinite;
     -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
   }
   @keyframes tykPulse{
     0%,100%{box-shadow:0 0 40px rgba(255,255,255,.5), 0 10px 30px rgba(0,0,0,.6)}
@@ -527,8 +582,21 @@
     .reader-body p{margin-bottom:20px}
     .reader-body .dlg{padding:12px 14px;margin:14px 0}
     #support .support-card{padding:28px 22px}
-    .story-card-img {height: 140px;}
-    .story-card.has-image .story-card-content {margin-top: -20px;}
+    
+    /* Фикс картинок для мобильных, чтобы не резало лица */
+    .story-card-img {
+      height: 160px;
+      object-position: center 20%; 
+    }
+    .reader-cover {
+      max-height: 250px;
+      object-position: center 20%;
+      margin-bottom: 24px;
+    }
+    .story-card.has-image .story-card-content {
+      margin-top: -20px;
+    }
+    .prize-grid { grid-template-columns: 1fr; }
   }
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
@@ -567,6 +635,7 @@
     <div class="subtitle">Истории · 18+</div>
     <nav class="menu-list">
       <button class="btn" onclick="show('stories')"><span class="icon">📖</span> Читать истории</button>
+      <button class="btn" onclick="show('giveaways')"><span class="icon">🎁</span> Розыгрыши</button>
       <button class="btn support" onclick="show('support')"><span class="icon">💛</span> Поддержать автора</button>
       <button class="btn" onclick="show('about')"><span class="icon">✨</span> О проекте</button>
     </nav>
@@ -591,6 +660,69 @@
       <div class="reader-foot">
         <button class="btn" onclick="show('stories')"><span class="icon">←</span> Вернуться к списку</button>
       </div>
+    </div>
+  </section>
+
+  <section class="screen hidden scrollable" id="giveaways">
+    <button class="back-btn" onclick="show('menu')">← Назад</button>
+    <h2 class="page-title">Розыгрыши</h2>
+    <p class="hint">Призы и условия</p>
+
+    <div class="about-card" style="text-align:center; max-width: 500px;">
+      <span class="giveaway-badge">🎁 МОЙ ТЕЛЕГРАМ-КАНАЛ</span>
+      
+      <p style="font-size:clamp(15px,4vw,17px); margin-bottom:20px; color:#fff; font-weight:700;">
+        Здесь я буду раздавать призы для подписчиков!
+      </p>
+      
+      <p style="margin-bottom:24px; color:#e4e4e4;">
+        Первый розыгрыш состоится при достижении <b>15 подписчиков</b> в канале. 
+        Чем больше подписчиков — тем больше призов!
+      </p>
+      
+      <div class="about-divider"></div>
+      
+      <p style="margin-bottom:16px; text-align:left; font-family:var(--font-display); font-size:14px; color:#fff; letter-spacing:.5px;">
+        🏆 ЧТО МОЖНО ВЫИГРАТЬ:
+      </p>
+      
+      <div class="prize-grid">
+        <div class="prize-item">
+          <div class="prize-icon">🎮</div>
+          <div class="prize-text">
+            <strong>Донат в Steam</strong>
+            Пополнение кошелька на любую игру
+          </div>
+        </div>
+        <div class="prize-item">
+          <div class="prize-icon">⭐</div>
+          <div class="prize-text">
+            <strong>Звёзды Telegram</strong>
+            Для стикеров и подарков
+          </div>
+        </div>
+        <div class="prize-item">
+          <div class="prize-icon">👤</div>
+          <div class="prize-text">
+            <strong>Telegram-аккаунты</strong>
+            Готовые аккаунты для использования
+          </div>
+        </div>
+      </div>
+
+      <div class="about-divider"></div>
+
+      <p style="margin-bottom:24px; color:#e4e4e4; font-size:14px;">
+        Чтобы участвовать — просто подпишись на канал. Розыгрыши будут проводиться автоматически через ботов.
+      </p>
+
+      <a class="btn tg" href="https://t.me/Pudgeus" target="_blank" rel="noopener" style="background:#fff; color:#000; font-size:16px; padding:18px;">
+        <span class="icon">✈️</span> ПОДПИСАТЬСЯ НА КАНАЛ
+      </a>
+      
+      <p class="support-note" style="margin-top:16px;">
+        Ссылка ведёт на мой Telegram-канал @Pudgeus
+      </p>
     </div>
   </section>
 
@@ -1037,6 +1169,62 @@
         d('Вилоу','Ты чего уставился?') + d('Абоба','Любуюсь.') + d('Вилоу','Фу, это было слишком мило. Верни мемы.') + d('Абоба','Не верну. С тобой я другой.'),
         'Он остался. И в чате стал писать чуть меньше — потому что теперь ему не нужно было быть громким, чтобы его заметили.'
       ]
+    },
+    /* ===== POISON_MA + EPIC ===== */
+    {
+      id: 'poison-ma-epic',
+      title: 'Poison_ma и epic',
+      subtitle: 'Она привыкла быть ядовитой. Он — просто быть. И именно это её обезоружило.',
+      tag: 'романтика · 18+',
+      paragraphs: [
+        'Poison_ma в чате держалась с вызовом. Острый язык, сарказм, никого не подпускает. Epic был её полной противоположностью — спокойный, немногословный, не лез в конфликты. Они пересеклись случайно, и Poison_ma сразу попыталась его задеть.',
+        d('Poison_ma','Ты вообще тут зачем? Молчишь, как будто тебе всё равно.') + d('epic','Мне не всё равно. Просто не вижу смысла в пустых спорах.') + d('Poison_ma','Скучный.') + d('epic','Возможно. Но зато честный.'),
+        'Она ожидала, что он огрызнётся или уйдёт. А он просто ответил спокойно. Это выбило её из колеи больше, чем любая перепалка.',
+        d('Poison_ma','Ты почему не злишься?') + d('epic','А зачем? Ты же не со зла. Ты просто защищаешься.') + d('Poison_ma','С чего ты взял?') + d('epic','По тому, как ты пишешь. Как будто ждёшь удара.'),
+        'Она замолчала. Впервые за долгое время кто-то увидел её настоящую — за слоем колючек. Они начали переписываться в личке. Сначала коротко, потом глубже. Epic не пытался её переделать. Он просто был рядом.',
+        d('Poison_ma','Тебе не надоело?') + d('epic','Что?') + d('Poison_ma','Что я такая.') + d('epic','Нет. Ты не «такая». Ты просто устала.') + d('Poison_ma','Откуда ты знаешь?') + d('epic','Потому что я тоже устал. Просто по-другому.'),
+        'Встретились вечером. Poison_ma пришла в чёрном, с привычной маской безразличия. Epic — в простом, без пафоса. Они сели друг напротив друга, и она впервые не знала, что сказать.',
+        d('epic','Ты выглядишь иначе, чем в чате.') + d('Poison_ma','Как?') + d('epic','Тише. Настоящей.') + d('Poison_ma','Не начинай.') + d('epic','Я не начинаю. Я просто говорю, что вижу.'),
+        'Гуляли долго. Говорили о том, о чём обычно молчат: о страхах, о прошлом, о том, как оба устали притворяться. Poison_ma впервые за долгое время не чувствовала необходимости защищаться. С ним было просто.',
+        d('Poison_ma','Почему с тобой так легко?') + d('epic','Потому что ты не боишься, что я тебя ударю.') + d('Poison_ma','А если ударю я?') + d('epic','Тогда я просто отойду. Но не уйду.'),
+        'У её подъезда он остановился. Не спрашивал, не намекал. Просто стоял. Poison_ma посмотрела на него и впервые за долгое время поняла, что не хочет, чтобы он уходил.',
+        d('Poison_ma','Зайдёшь?') + d('epic','Если ты хочешь.') + d('Poison_ma','Я не спрашиваю, хочу ли я. Я спрашиваю, зайдёшь ли ты.') + d('epic','Тогда да.'),
+        'Дома у неё было холодно и пусто. Она не привыкла к гостям. Epic сел на кухне, не задавая лишних вопросов. Они пили чай, и Poison_ma впервые за долгое время не чувствовала себя в обороне.',
+        d('Poison_ma','Ты не боишься меня?') + d('epic','Нет.') + d('Poison_ma','Почему?') + d('epic','Потому что яд — это просто защита. А ты устала защищаться.'),
+        '<span class="scene-break">* * *</span>',
+        'Ночь была жаркой и откровенной. Poison_ma впервые позволила себе быть не сильной, а просто собой. Epic не торопил, не давил. Он просто был рядом — и этого оказалось достаточно. К утру оба выдохлись и лежали, глядя в потолок.',
+        d('Poison_ma','Ты не жалеешь?') + d('epic','Нет.') + d('Poison_ma','Даже если я снова буду колючей?') + d('epic','Тогда я просто буду рядом, пока ты не перестанешь.'),
+        'Утром она проснулась первой. Посмотрела на спящего Epic и впервые за долгое время не почувствовала желания убежать.',
+        d('epic','Ты здесь.') + d('Poison_ma','Здесь.') + d('epic','Останешься?') + d('Poison_ma','Уже осталась.'),
+        'Она всё ещё язвит в чате. Но теперь у неё есть тот, кто видит за этим настоящую её.'
+      ]
+    },
+    /* ===== DETLLR + PYPS ===== */
+    {
+      id: 'detllr-pyps',
+      title: 'DetLlr и Pyps',
+      subtitle: 'Он думал, что знает её. Она оказалась глубже, чем он предполагал.',
+      tag: 'романтика · 18+',
+      paragraphs: [
+        'DetLlr в чате был уверенным в себе парнем: шутил, флиртовал, не лез за словом в карман. Pyps была тише, но с характером — она не велась на дешёвые подкаты. Именно это и зацепило DetLlr.',
+        d('DetLlr','Ты почему не отвечаешь на мои шутки?') + d('Pyps','Потому что они несмешные.') + d('DetLlr','Жёстко.') + d('Pyps','Зато честно.') + d('DetLlr','Мне нравится.'),
+        'Он начал писать ей в личку — сначала с шутками, потом серьёзнее. Pyps отвечала коротко, но по делу. Она не играла в игры, и DetLlr впервые за долгое время почувствовал, что это не игра.',
+        d('DetLlr','Ты всегда такая серьёзная?') + d('Pyps','Только когда со мной играют.') + d('DetLlr','А если я не играю?') + d('Pyps','Тогда посмотрим.'),
+        'Через неделю он предложил встретиться. Pyps согласилась не сразу — ей нужно было убедиться, что он не шутит. Встретились в парке, вечером. Она пришла в простой одежде, без макияжа. DetLlr впервые не знал, что сказать.',
+        d('DetLlr','Ты выглядишь иначе.') + d('Pyps','Это плохо?') + d('DetLlr','Нет. Настояще.') + d('Pyps','Ты тоже. Без шуток.'),
+        'Гуляли долго. DetLlr впервые говорил не для того, чтобы произвести впечатление, а просто потому, что хотел. Pyps слушала и отвечала — честно, без притворства. Они говорили о страхах, о мечтах, о том, что обычно скрывают за шутками.',
+        d('DetLlr','Я не привык быть серьёзным.') + d('Pyps','Значит, пора привыкать.') + d('DetLlr','С тобой?') + d('Pyps','Это ты решай.'),
+        'У её подъезда он остановился. Впервые за долгое время он не знал, как закончить вечер. Pyps посмотрела на него и улыбнулась — впервые за вечер.',
+        d('Pyps','Ты чего замер?') + d('DetLlr','Не хочу ошибиться.') + d('Pyps','Тогда не ошибайся. Заходи.'),
+        'Дома было тепло. DetLlr впервые чувствовал себя не на сцене, а просто человеком. Они сидели на кухне, пили чай, и он рассказывал ей то, чего не рассказывал никому. Pyps слушала и не перебивала.',
+        d('DetLlr','Ты не думаешь, что я слишком много говорю?') + d('Pyps','Нет. Я думаю, что тебе давно нужно было это рассказать.') + d('DetLlr','Почему ты понимаешь?') + d('Pyps','Потому что я тоже прячусь.'),
+        '<span class="scene-break">* * *</span>',
+        'Ночь была жаркой и тихой. Без громких слов, без спешки. DetLlr оказался внимательнее, чем показывал. Pyps — нежнее, чем казалась. К утру оба выдохлись и лежали, глядя в потолок.',
+        d('DetLlr','Ты не жалеешь?') + d('Pyps','Нет.') + d('DetLlr','Я боялся, что ты скажешь иначе.') + d('Pyps','Я не играю в такие игры.'),
+        'Утром Pyps проснулась первой. Посмотрела на спящего DetLlr и поняла, что впервые за долгое время не хочет, чтобы он уходил.',
+        d('Pyps','Ты останешься?') + d('DetLlr','Я и не собирался уходить.') + d('Pyps','Тогда зачем спрашиваешь?') + d('DetLlr','Чтобы услышать, как ты это скажешь.'),
+        'Он остался. И в чате стал писать чуть меньше — потому что теперь ему не нужно было быть громким, чтобы его услышали.'
+      ]
     }
   ];
 
@@ -1093,7 +1281,8 @@
     stories:    document.getElementById('stories'),
     reader:     document.getElementById('reader'),
     support:    document.getElementById('support'),
-    about:      document.getElementById('about')
+    about:      document.getElementById('about'),
+    giveaways:  document.getElementById('giveaways')
   };
 
   function show(name){
